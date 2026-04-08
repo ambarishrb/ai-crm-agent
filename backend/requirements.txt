@@ -1,0 +1,10 @@
+fastapi==0.115.12
+uvicorn[standard]==0.34.2
+sqlalchemy==2.0.41
+psycopg2-binary==2.9.11
+alembic==1.15.2
+pydantic-settings==2.9.1
+python-dotenv==1.1.0
+langchain-groq==0.3.2
+langgraph==0.4.7
+langchain-core==0.3.55
