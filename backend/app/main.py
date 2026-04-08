@@ -1,6 +1,7 @@
+from app.config import settings
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
 from app.routers import hcp, interaction, chat
 
 app = FastAPI(title="HCP CRM API", version="1.0.0")

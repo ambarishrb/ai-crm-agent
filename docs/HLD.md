@@ -303,11 +303,11 @@ class AgentState(TypedDict):
 
 | Setting | Value |
 |---------|-------|
-| Primary Model | `llama-3.1-8b-instant` via Groq |
-| Fallback Model | `llama-3.3-70b-versatile` via Groq |
+| Primary Model | llama-3.3-70b-versatile via Groq |
+| Secondary Model | llama-3.1-8b-instant via Groq |
 | Temperature (extraction) | 0.1 |
 | Temperature (conversation) | 0.7 |
-| Tool binding | `ChatGroq.bind_tools([...])` |
+| Tool binding | ChatGroq.bind_tools([...]) |
 
 ---
 
@@ -410,7 +410,7 @@ hcp/
 │   ├── .env                        # DATABASE_URL, GROQ_API_KEY
 │   ├── .env.example
 │   ├── requirements.txt
-│   ├── docker-compose.yml          # PostgreSQL only
+│   ├── database_setup.md          # Instruction for local PostgreSQL setup
 │   ├── alembic.ini
 │   ├── alembic/
 │   │   ├── env.py
@@ -568,7 +568,7 @@ Pre-populated data for demo purposes:
 | Backend scaffold | `backend/` folder, `requirements.txt` (fastapi, uvicorn, sqlalchemy, psycopg2-binary, alembic, pydantic-settings, langchain-groq, langgraph, langchain-core, python-dotenv), FastAPI app skeleton with CORS middleware | Done |
 | Frontend scaffold | `frontend/` folder via `npm create vite@latest -- --template react`, install `@reduxjs/toolkit`, `react-redux`, `axios` | Done |
 | Environment files | `backend/.env.example` (DATABASE_URL, GROQ_API_KEY), `frontend/.env` (VITE_API_URL) | Done |
-| Docker Compose | `backend/docker-compose.yml` with PostgreSQL service (port 5432) | Done |
+| Database Setup | Local PostgreSQL configured on port 5432 | Done |
 
 **Exit criteria:** Both servers start without errors. Frontend can make a test request to backend without CORS issues.
 
@@ -592,7 +592,7 @@ Pre-populated data for demo purposes:
 | Run migration | `alembic upgrade head` — tables created in PostgreSQL | Done |
 | Seed script | `seed.py` — populate 8 HCPs, 6 materials, 5 samples | Done |
 
-**Exit criteria:** `docker-compose up -d` starts Postgres, migration runs, seed data visible via `psql`.
+**Exit criteria:** PostgreSQL server running locally and accessible via DATABASE_URL
 
 **Implementation notes:**
 - Alembic `env.py` reads `DATABASE_URL` from `app.config.settings` (no hardcoded URL in `alembic.ini`)
@@ -641,7 +641,7 @@ Pre-populated data for demo purposes:
 - `"Summarize this interaction"` -> summarize_interaction
 
 **Implementation notes:**
-- Factory pattern used: `create_tools(db)` binds a DB session to tool closures, preventing connection leaks
+- Tools are initialized with a database session to perform CRUD operations
 - Primary model: `llama-3.3-70b-versatile` for intent routing (with tool binding), `llama-3.1-8b-instant` for extraction/summarization
 - Fuzzy HCP matching: case-insensitive partial match with "Dr." prefix stripping
 - Graph topology: `route_intent` -> conditional edge (tool call vs direct response) -> `tools` (ToolNode) -> `summarize_response` -> END

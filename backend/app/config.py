@@ -8,4 +8,8 @@ class Settings(BaseSettings):
     model_config = {"env_file": ".env"}
 
 
+
 settings = Settings()
+
+
+print("GROQ KEY:", settings.GROQ_API_KEY)

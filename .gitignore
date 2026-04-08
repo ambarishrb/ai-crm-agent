@@ -1,0 +1,29 @@
+# Environment variables (CRITICAL)
+.env
+backend/.env
+frontend/.env
+.DS_Store
+venv/
+backend/venv/
+
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# VS Code
+.vscode/
+
+# Mac system files
+.DS_Store
+
+# Node (frontend)
+node_modules/
+dist/
+build/
+
+# Logs
+*.log
