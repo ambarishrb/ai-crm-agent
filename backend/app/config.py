@@ -11,5 +11,3 @@ class Settings(BaseSettings):
 
 settings = Settings()
 
-
-print("GROQ KEY:", settings.GROQ_API_KEY)
